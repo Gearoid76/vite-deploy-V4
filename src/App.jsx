@@ -18,34 +18,39 @@ function App() {
   const [playlist, setPlaylist] = useState([]);
   const [accessToken, setAccessToken] = useState(localStorage.getItem('spotifyAccessToken'));
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get("code");
+  
 
-    if (!code) {
-      console.log('No code found, redirecting to auth flow');
-      redirectToAuthCodeFlow(clientId);
-    } else {
-      console.log('Code found, fetching access token');
-      (async () => {
-        try {
-          const token = await getAccessToken(clientId, code);
-          console.log('Fetched Access Token:', token);
-          setAccessToken(token);
-          window.history.replaceState({}, document.title, "/");
-        } catch (error) {
-          console.error('Error fetching access token', error.message);
-        }
-      })();
-    }
-  }, []);
+  useEffect(() => {
+
+    if(!accessToken) { 
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("code");
+
+      if (!code) {
+        console.log('No code found, redirecting to auth flow');
+        redirectToAuthCodeFlow(clientId);
+      } else {
+        console.log('Code found, fetching access token');
+        (async () => {
+          try {
+            const token = await getAccessToken(clientId, code);
+            console.log('Fetched Access Token:', token);
+            setAccessToken(token);
+            window.history.replaceState({}, document.title, "/");
+          } catch (error) {
+            console.error('Error fetching access token', error.message);
+          }
+        })();
+      }
+    } 
+  }, [accessToken, clientId]);
 
   const addToPlayList = (result) => {
     console.log('Adding result to playlist', result);
 
     if (!result.uri) {
       console.error('Result does not have a uri:', result);
-      alert ('This track cannot be added to the playlist because it is missing a URI');
+      alert('This track cannot be added to the playlist because it is missing a URI');
       return;
     }
     setPlaylist((prevPlaylist) => [...prevPlaylist, result]);
@@ -60,8 +65,8 @@ function App() {
     console.log('Track URIs:', trackUris);
 
     if (!accessToken) {
-      console.error('Access token is missing ');
-      alert('Acccess token is missing. Please authenticate again');
+      console.error('Access token is missing');
+      alert('Access token is missing. Please authenticate again');
       return;
     }
 
@@ -71,7 +76,7 @@ function App() {
       return;
     }
 
-    console.log('Using Access Token:', accessToken); 
+    console.log('Using Access Token:', accessToken);
     try {
       const playlistId = await createSpotifyPlaylist(name, accessToken);
       console.log('Created playlist ID:', playlistId);
@@ -85,14 +90,14 @@ function App() {
       }
     } catch (error) {
       console.error('Error saving playlist:', error);
-      alert('Failed to save to playlist');
+      alert('Failed to save playlist');
     }
   };
 
   const searchTracks = async (query) => {
 
     if (!accessToken) {
-      console.error('Access token is missing 2');
+      console.error('Access token is missing');
       alert('Access token is missing. Please authenticate again');
       return;
     }
@@ -117,8 +122,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/"element={<Home />} /> 
-        <Route path="/callback" element={<Callback />} />
+        <Route path="/" element={<Home />} /> 
+        <Route path="/callback" element={<Callback clientId={clientId} />} />
       </Routes>
     </Router>
   

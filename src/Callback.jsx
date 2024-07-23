@@ -1,29 +1,37 @@
-// src/Callback.jsx
+// Callback.jsx
+// Callback.jsx
 import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { getAccessToken } from './authentication'; // Ensure this path is correct
 
-const Callback = () => {
-  const location = useLocation();
+const Callback = ({ clientId }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const code = searchParams.get('code');
+    const fetchToken = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code');
 
-    if (code) {
-      // Handle the code (e.g., send it to your backend for token exchange)
-      console.log('Authorization code:', code);
+      if (code) {
+        try {
+          const token = await getAccessToken(clientId, code);
+          console.log('Fetched Access Token:', token);
+          // Store the token in local storage or context/state
+          localStorage.setItem('spotifyAccessToken', token);
+          navigate('/');
+        } catch (error) {
+          console.error('Error fetching access token:', error.message);
+        }
+      } else {
+        console.error('No code found in callback URL');
+      }
+    };
 
-      // Navigate to your main application page or a success page
-      navigate('/');
-    } else {
-      // Handle the error case
-      console.error('No authorization code found');
-      navigate('/');
-    }
-  }, [location, navigate]);
+    fetchToken();
+  }, [clientId, navigate]);
 
-  return <div>Processing callback...</div>;
+  return <div>Loading...</div>;
 };
 
 export default Callback;
+
