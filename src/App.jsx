@@ -7,6 +7,10 @@ import { addTracksToPlaylist } from './components/addTracksToPlaylist';
 import './App.css';
 import { SearchBar } from './components/SearchBar';
 import { SearchResultsList } from './components/SearchResultsList';
+import  Home from './components/Home';
+import Callback from './Callback';
+
+const clientId = import.meta.env.VITE_CLIENT_ID;
 
 
 function App() {
@@ -113,7 +117,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/"element={<Home />} />
+        <Route path="/"element={<Home />} /> 
         <Route path="/callback" element={<Callback />} />
       </Routes>
     </Router>
