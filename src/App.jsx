@@ -16,7 +16,7 @@ const clientId = import.meta.env.VITE_CLIENT_ID;
 function App() {
   const [results, setResults] = useState([]);
   const [playlist, setPlaylist] = useState([]);
-  const [accessToken, setAccessToken] = useState(null);
+  const [accessToken, setAccessToken] = useState(localStorage.getItem('spotifyAccessToken'));
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
