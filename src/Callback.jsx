@@ -1,8 +1,7 @@
 // Callback.jsx
-// Callback.jsx
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAccessToken } from './authentication'; // Ensure this path is correct
+import { getAccessToken } from './authentication';
 
 const Callback = ({ clientId }) => {
   const navigate = useNavigate();
