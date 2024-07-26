@@ -59,8 +59,9 @@ export async function getAccessToken(clientId, code) {
     params.append("grant_type", "authorization_code");
     params.append("code", code);
     params.append("client_id", clientId);
+    console.log('client_id', clientId);
     //params.append("client_id", import.meta.env.VITE_CLIENT_ID);
-    params.append("redirect_uri", "http://localhost:5173/callback");
+    params.append("redirect_uri", "https://https://gearoid76.github.io/vite-deploy-V4/callback");
     params.append("code_verifier", verifier);
 
     try {
