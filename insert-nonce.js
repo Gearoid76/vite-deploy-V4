@@ -18,7 +18,6 @@ const insertNonce = (nonce) => {
         }
         //Replace script with nonce
         const result = data.replace(
-            /<script type="module" crossorigin src="(.+?)"><\/script>/,
       `<script nonce="${nonce}" type="module" crossorigin src="$1"></script>`
     );
 
