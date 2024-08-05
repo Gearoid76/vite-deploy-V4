@@ -7,7 +7,7 @@ const Home = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('https://accounts.spotify.com/authorize') // Adjust the URL as needed https://api.spotify.com https://accounts.spotify.com/authorize
+    axios.get('https://accounts.spotify.com/authorize')
       .then(response => {
         setData(response.data);
         setLoading(false);

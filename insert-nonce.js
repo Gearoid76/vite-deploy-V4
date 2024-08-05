@@ -33,7 +33,7 @@ const insertNonce = (nonce) => {
 
 const updateHtaccess = (nonce) => {
     const cspDirective = `Header set Content-Security-Policy "script-src 'nonce-${nonce}'"`;
-    fs.writeFile(htaccessPath, cspDirective, 'utf-8', (err) => {
+    fs.writeFile(htaccessPath, cspDirective, 'utf8', (err) => {
         if (err) {
             console.error('Error writing .htaccess', err);
         } else {
